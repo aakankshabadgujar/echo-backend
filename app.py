@@ -14,7 +14,7 @@ load_dotenv()
 app = Flask(__name__)
 
 # Flask-CORS setup to allow React frontend connection 
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "https://echo-music-one.vercel.app/"}})
 
 # 1. Ensure this import is at the very top of app.py
 from sqlalchemy.pool import NullPool
