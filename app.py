@@ -18,9 +18,17 @@ CORS(app, resources={r"/*": {"origins": "https://echo-music-one.vercel.app"}})
 
 # 2. Database Configuration for Supabase Production
 # Using the connection string from your environment variables
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('postgresql://postgres.ssydihjxkkabjhmomdfq:[YOUR-PASSWORD]@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db_url = os.getenv('DATABASE_URL')
 
+
+if not db_url:
+    db_url = "postgresql://postgres.ssyidhjxkkabjhmomdfq:Aakshu&teju12@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres"
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    
+    
 # Essential for Supabase to prevent connection hanging on the free tier
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     "poolclass": NullPool,
