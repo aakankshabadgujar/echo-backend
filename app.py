@@ -57,9 +57,14 @@ with app.app_context():
 @app.route('/register', methods=['POST'])
 def register():
     """Handles new user registration with JSON payload"""
-    data = request.get_json()
-    if not data or not data.get('username') or not data.get('password'):
-        return jsonify({"error": "Missing username or password"}), 400
+    data = request.json
+    # Ensure these keys match what you typed: 'username', 'email', 'password'
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
+
+    if not username or not email or not password:
+        return jsonify({"error": "Missing required fields"}), 400
 
     if User.query.filter_by(username=data.get('username')).first():
         return jsonify({"error": "Username already exists"}), 400
