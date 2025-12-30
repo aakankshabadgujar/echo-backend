@@ -14,12 +14,7 @@ load_dotenv()
 app = Flask(__name__)
 
 # 1. CORS Setup - Allowing your specific Vercel frontend
-CORS(app, resources={r"/*": {"origins": [
-            "https://echo-music-frontend.onrender.com",
-            "http://localhost:5173"
-        ],
-        "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"]}})
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # 2. Database Configuration for Supabase Production
 # Using the connection string from your environment variables
