@@ -22,7 +22,7 @@ db_url = os.getenv('DATABASE_URL')
 
 
 if not db_url:
-    db_url = "postgresql://postgres.ssydihjxkkabjhmomdfq:Aakshu&teju12@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres"
+    db_url = "postgresql://postgres.ssyidhjxkkabjhmomdfq:Aakshu&teju12@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres"
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
