@@ -11,6 +11,17 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    # Added: Easily find all playlists for this user
+    playlists = db.relationship('Playlist', backref='owner', lazy=True)
+
+class Playlist(db.Model):
+    __tablename__ = 'playlists'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    # Added: Linking tracks to this playlist via the join table
+    tracks = db.relationship('Track', secondary='playlist_tracks', backref='in_playlists')
 
 class Track(db.Model):
     __tablename__ = 'tracks'
@@ -30,12 +41,6 @@ class Podcast(db.Model):
     description = db.Column(db.Text)
     category = db.Column(db.String(50))
 
-class Playlist(db.Model):
-    __tablename__ = 'playlists'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class PlaylistTrack(db.Model):
     __tablename__ = 'playlist_tracks'
