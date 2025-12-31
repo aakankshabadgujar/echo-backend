@@ -151,16 +151,27 @@ def add_to_playlist(playlist_id):
     db.session.commit()
     return jsonify({"message": "Added"}), 201
 
-@app.route('/playlists/<int:playlist_id>/tracks/<int:track_id>', methods=['DELETE'])
+@app.route('/playlists/<playlist_id>/tracks/<track_id>', methods=['DELETE']) # Removed 'int:' to be flexible
 @jwt_required()
 def remove_from_playlist(playlist_id, track_id):
-    """Remove track from playlist without deleting the track itself"""
-    entry = PlaylistTrack.query.filter_by(playlist_id=playlist_id, track_id=track_id).first()
-    if entry:
-        db.session.delete(entry)
-        db.session.commit()
-        return jsonify({"message": "Removed"}), 200
-    return jsonify({"error": "Not found"}), 404
+    try:
+        # Debug: Check Render Logs to see if these IDs match your Supabase table
+        print(f"Attempting to remove Track {track_id} from Playlist {playlist_id}")
+        
+        entry = PlaylistTrack.query.filter_by(
+            playlist_id= playlist_id, 
+            track_id= track_id
+        ).first()
+
+        if entry:
+            db.session.delete(entry)
+            db.session.commit()
+            return jsonify({"message": "Removed successfully"}), 200
+            
+        return jsonify({"error": "Association not found in database"}), 404
+    except Exception as e:
+        print(f"Delete Error: {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/')
 def home():
